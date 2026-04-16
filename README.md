@@ -1,2 +1,3 @@
 # megalabs
-For megalabs project.
+
+Contains all resources for megalabs project.
