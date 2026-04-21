@@ -1,0 +1,33 @@
+NOTES AND IDEAS
+
+It was suggested that I could have up to 100 different models, from different combinations of features and model types. Could also optimize for different GridSearch strengths (better recall/precision/F1 etc).
+
+
+VERY IMPORTANT THIS TIME to organize and optimize from the start. Subfolders for everything. Make commands robust and reusable with minimal changes. 
+
+
+
+
+I find it important to somewhat split up ML commands to avoid a notebook being too long. Normally I do this by making each model its own notebook. However that also gets hard to manage. 
+
+Would it make sense to store commands in txt files and simply load their path in the notebook? Would formatting work?
+
+
+
+
+Want to put more effort into formatting the notebooks this time as well.
+
+
+
+
+Was instructed to use at least one LSTM. Should do more than one.
+
+
+
+
+Should incorporate unsupervised learning as well if possible. For example if I have transactions, let them be sorted and use the assigned categories as features? Is that getting too recursive?
+
+
+
+
+Will any
