@@ -36,6 +36,11 @@ META has incomplete data, as it rebranded within my window. Can I get earlier da
 
 
 
+
+In creating dataframes with daily data, need to add SMA20, SMA50 etc. Need it to happen right out of the box to avoid reprocessing later.
+
+
+
 =======
 =======
 =======
