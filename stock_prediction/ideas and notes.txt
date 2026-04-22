@@ -45,6 +45,10 @@ In creating dataframes with daily data, need to add SMA20, SMA50 etc. Need it to
 In measuring daily changes, should also measure across average of all stocks.
 
 
+
+Weird, seems AAPL never had a signed daily change of at least 2%. Is AAPL just an unusually stable stock or do I need to find another source?
+
+
 =======
 =======
 =======
