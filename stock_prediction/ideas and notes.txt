@@ -30,4 +30,10 @@ Should incorporate unsupervised learning as well if possible. For example if I h
 
 
 
-Will any
+=======
+=======
+=======
+
+
+
+My plan limits me to five years of data, to the day. Every day, another day of historical data will fall outside my window. I would like to keep data that falls outside the window over the course of the project, but with my current methods, over time this would result in having to create a new CSV every day manually, and then manually combine to remove duplicates. How practical or difficult would it be to set up something like a Webhook to manually grab this data
