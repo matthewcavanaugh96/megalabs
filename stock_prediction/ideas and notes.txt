@@ -1,5 +1,16 @@
 NOTES AND IDEAS
 
+
+
+'daily_data_SAFE_OLD' is likely no longer of any use since it does not include FB data before it rebranded. Holding onto it for a while just in case.
+
+
+'daily_data_SAFE' is a backup copy created 2026_04_27, which will retain data gathered on that date even if the cell is run again.
+
+
+
+
+
 It was suggested that I could have up to 100 different models, from different combinations of features and model types. Could also optimize for different GridSearch strengths (better recall/precision/F1 etc).
 
 
@@ -32,12 +43,7 @@ Should incorporate unsupervised learning as well if possible. For example if I h
 
 
 
-META has incomplete data, as it rebranded within my window. Can I get earlier data for it under the Facebook name?
-
-
-
-
-In creating dataframes with daily data, need to add SMA20, SMA50 etc. Need it to happen right out of the box to avoid reprocessing later.
+In creating dataframes with daily data, need to add SMA20, SMA50 etc. Need it to happen right out of the box to avoid reprocessing later. If the data includes fewer days than the specified average, take whatever is available. Or could these SMAs be gathered straight from the API?
 
 
 
