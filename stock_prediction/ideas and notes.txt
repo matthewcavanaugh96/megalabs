@@ -2,6 +2,10 @@ NOTES AND IDEAS
 
 
 
+I downloaded nearly 6000 stocks from the Massive API. Since that number would likely be practical, I make a reduced dataset consisting only of stocks with an average of 30000 daily transactions, which reduced the stocks to no more than 523 (pending further data cleaning).
+
+
+
 'daily_data_SAFE_OLD' is likely no longer of any use since it does not include FB data before it rebranded. Holding onto it for a while just in case.
 
 
