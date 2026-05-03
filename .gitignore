@@ -1,3 +1,6 @@
-stock_prediction/api_keys
-stock_prediction/junk_notebooks
-stock_prediction/chats
+stock_prediction/api_keys/
+stock_prediction/junk_notebooks/
+stock_prediction/chats/
+stock_prediction/raw_daily_data_SAFE_2026_04_27/
+stock_prediction/raw_daily_data_SAFE_2026_05_02/
+stock_prediction/combined_daily_data.csv
