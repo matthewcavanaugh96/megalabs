@@ -6,6 +6,8 @@ stock_prediction/raw_daily_data_SAFE_2026_05_02/
 stock_prediction/raw_daily_data_SAFE_2026_05_03/
 stock_prediction/raw_daily_data_SAFE_2026_05_04/
 stock_prediction/raw_daily_data/
+stock_prediction/raw_hourly_data/
 stock_prediction/transformed_daily_data/
+stock_prediction/transformed_hourly_data/
 stock_prediction/combined_daily_data.csv
 stock_prediction/.ipynb_checkpoints/combined_daily_data-checkpoints.csv
