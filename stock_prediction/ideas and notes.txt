@@ -13,6 +13,9 @@ Those same 397 stocks have also been downloaded with full hourly data.
 
 My full daily dataset stretches from 2021-05-05 to 2026-05-01.
 
+After calculating SMAs up to 100 days, as well as dropping the final row per ticker for which next_close does not exist, the span is from 2021-07-15 to 2026-04-30.
+
+
 
 My plan is to use 2021-2024 data for training, 2025 for testing, and 2026 for validation
 
@@ -45,6 +48,8 @@ Potentially, another feature set could contain only features correlated to a low
 Eventually, I want to add gap analysis - to see what happened over weekends and holidays.
 
 
+
+Need to add day_of_week to datasets, but of course that won't be a modeling feature.
 
 
 
