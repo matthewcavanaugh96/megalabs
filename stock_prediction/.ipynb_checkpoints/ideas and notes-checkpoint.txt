@@ -11,11 +11,13 @@ Those same 397 stocks have also been downloaded with full hourly data.
 
 
 
-My daily dataset stretches from 2021-05-05 to 2026-05-01.
+My full daily dataset stretches from 2021-05-05 to 2026-05-01.
 
-So, data from 2026-05-02 onward should be gathered later to use as validation.
 
-Or should my validation window go a little further back? Start of 2026?
+My plan is to use 2021-2024 data for training, 2025 for testing, and 2026 for validation
+
+I will measure each model by test-validation falloff.
+
 
 
 
@@ -29,9 +31,9 @@ Or should my validation window go a little further back? Start of 2026?
 
 
 
-So far, I have started modeling daily data with only the raw metrics pulled directly from the API.
+My first models will be with the full dataset and all calculated features.
 
-Eventually, I will add manually calculated metrics. At this point, 
+Potentially, another feature set could contain only features correlated to a low error rate.
 
 
 
@@ -46,7 +48,7 @@ Eventually, I want to add gap analysis - to see what happened over weekends and 
 
 
 
-
+Out of all my calculated metrics, I'd like to measure each relative to the average of the dataset - but those won't be modeling features.
 
 
 
@@ -55,6 +57,25 @@ It was suggested that I could have up to 100 different models, from different co
 
 
 VERY IMPORTANT THIS TIME to organize and optimize from the start. Subfolders for everything. Make commands robust and reusable with minimal changes. 
+
+
+
+
+
+
+
+CURRENT IDEA
+MODEL FILENAMES WILL BE AS FOLLOWS:
+
+model_,
+daily_ or hourly,
+model type (such as RFC, XGB etc),
+GridSearch optimization (P for precision, R for recall, F for F1, X for no GridSearch)
+feature set (featmax = full list of features, feat2 = second list of features - these will be defined elsewhere)
+
+model_daily_rfc_GSX_featmax
+
+May be forced to revise or abandon this level of detail, if n_estimators and such will also be varied.
 
 
 
