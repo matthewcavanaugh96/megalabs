@@ -2,14 +2,24 @@ NOTES AND IDEAS
 
 
 
-I downloaded nearly 6000 stocks from the Massive API. Since that number would likely be practical, I make a reduced dataset consisting only of stocks with an average of 30000 daily transactions, which reduced the stocks to no more than 523 (pending further data cleaning).
+My daily dataset stretches from 2021-05-05 to 2026-05-01.
+
+So, data from 2026-05-02 onward should be gathered later to use as validation.
+
+Or should my validation window go a little further back? Start of 2026?
 
 
 
-'daily_data_SAFE_OLD' is likely no longer of any use since it does not include FB data before it rebranded. Holding onto it for a while just in case.
 
 
-'daily_data_SAFE' is a backup copy created 2026_04_27, which will retain data gathered on that date even if the cell is run again.
+
+
+
+
+
+I downloaded nearly 6000 stocks from the Massive API. Since such a sized dataset would be impractical to work with, I made a reduced dataset consisting only of stocks with an average of 30000 daily transactions, and with a satisfactorily low number of misisng days, which reduced the stocks to 397. 
+
+Those same 397 stocks have also been downloaded with full hourly data.
 
 
 
@@ -19,6 +29,9 @@ It was suggested that I could have up to 100 different models, from different co
 
 
 VERY IMPORTANT THIS TIME to organize and optimize from the start. Subfolders for everything. Make commands robust and reusable with minimal changes. 
+
+
+
 
 
 
