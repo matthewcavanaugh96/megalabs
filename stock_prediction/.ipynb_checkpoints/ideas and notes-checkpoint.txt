@@ -34,13 +34,14 @@ I will measure each model by test-validation falloff.
 
 
 
-My first models will be with the full dataset and all calculated features.
-
+My first models are with the full dataset and all calculated features.
 Potentially, another feature set could contain only features correlated to a low error rate.
 
 
 
 
+
+Currently, my target, next_close, is being calculated in the modeling notebooks. Would it be better practice to have that ready in advance?
 
 
 
