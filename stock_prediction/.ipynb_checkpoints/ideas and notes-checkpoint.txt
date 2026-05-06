@@ -2,6 +2,15 @@ NOTES AND IDEAS
 
 
 
+
+I downloaded nearly 6000 stocks from the Massive API. Since such a sized dataset would be impractical to work with, I made a reduced dataset consisting only of stocks with an average of 30000 daily transactions, and with a satisfactorily low number of misisng days, which reduced the stocks to 397. 
+
+Those same 397 stocks have also been downloaded with full hourly data.
+
+
+
+
+
 My daily dataset stretches from 2021-05-05 to 2026-05-01.
 
 So, data from 2026-05-02 onward should be gathered later to use as validation.
@@ -11,15 +20,32 @@ Or should my validation window go a little further back? Start of 2026?
 
 
 
+2021 through 2024 will be used as training.
+
+2025 as test.
+
+2026 as validation.
+
+
+
+
+So far, I have started modeling daily data with only the raw metrics pulled directly from the API.
+
+Eventually, I will add manually calculated metrics. At this point, 
 
 
 
 
 
 
-I downloaded nearly 6000 stocks from the Massive API. Since such a sized dataset would be impractical to work with, I made a reduced dataset consisting only of stocks with an average of 30000 daily transactions, and with a satisfactorily low number of misisng days, which reduced the stocks to 397. 
 
-Those same 397 stocks have also been downloaded with full hourly data.
+
+Eventually, I want to add gap analysis - to see what happened over weekends and holidays.
+
+
+
+
+
 
 
 
@@ -32,6 +58,14 @@ VERY IMPORTANT THIS TIME to organize and optimize from the start. Subfolders for
 
 
 
+=======
+=======
+
+
+POTENTIAL PROBLEM -
+Daily high, low, open and close match up exactly with what I am seeing for the corresponding day in the hourly dataset. HOWEVER, 'volume' in the daily dataset does not seem to match the sum of all hourly 'volume' values for that day. I was advised that this is to be expected given different methods in gathering data.
+
+If I rescale, I will use daily totals as the "truth" to adjust hourly data to. It might not matter though, since hourly and daily data will likely not be put into the same model.
 
 
 
