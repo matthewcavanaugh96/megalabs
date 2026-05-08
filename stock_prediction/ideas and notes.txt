@@ -3,6 +3,27 @@ NOTES AND IDEAS
 
 
 
+
+NEED TO ADD TO ANALYSIS METRICS
+directionally_correct (binary)
+
+GROUP BY - 
+day_of_week
+month
+week_of
+
+GAP ANALYSIS
+I already have every trading day. By determining day of week, I can find gaps, and whether these were weekends or holidays, or both.
+
+Were understimations or overestimations more common?
+
+
+
+
+
+
+
+
 I downloaded nearly 6000 stocks from the Massive API. Since such a sized dataset would be impractical to work with, I made a reduced dataset consisting only of stocks with an average of 30000 daily transactions, and with a satisfactorily low number of misisng days, which reduced the stocks to 397. 
 
 Those same 397 stocks have also been downloaded with full hourly data.
