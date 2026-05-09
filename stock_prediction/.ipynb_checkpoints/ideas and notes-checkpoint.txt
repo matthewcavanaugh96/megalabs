@@ -2,10 +2,16 @@ NOTES AND IDEAS
 
 
 
+My target is next_close_pct_change. Should I relabel this as 'NCPC' for the sake of visual cleanliness?
 
 
-NEED TO ADD TO ANALYSIS METRICS
-directionally_correct (binary)
+Currently, my target, next_close_pct_change, is being calculated in the modeling notebooks. Will add that to ETL notebook to have ready in advance.
+
+
+
+
+
+ANALYSIS METRICS
 
 GROUP BY - 
 day_of_week
@@ -71,7 +77,6 @@ Potentially, another feature set could contain only features correlated to a low
 
 
 
-Currently, my target, next_close, is being calculated in the modeling notebooks. Would it be better practice to have that ready in advance?
 
 
 
