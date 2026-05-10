@@ -31,6 +31,8 @@ Could also run simple classification of directionality, and compare that to impu
 
 
 
+
+
 ANALYSIS METRICS
 
 GROUP BY - 
@@ -55,6 +57,11 @@ Should hourly data directly interact with the daily models?
 Will have to refine my modeling codeblocks to be instantly compatible with multiple feature sets, only changing one line.
 
 
+
+
+
+
+During troubleshooting, I mistakenly overwrote Facebook data from before its rebrand to META, and consequently lost a few days in the raw data. The combined dataset, after cleaning in which previous rows are changed to META, is unaffected.
 
 
 
