@@ -11,6 +11,26 @@ Currently, my target, next_close_pct_change, is being calculated in the modeling
 
 
 
+For the Random Forest, I have kept results from a previous attempt in which I used the raw next_close as the target. I imputed the implied percentage change from those results, and compared them to the newer version in which NCPC was the target.
+
+The raw target's mean error was 2.19% and the median error was 1.27%.
+The pct target's mean error was 0.72% and the median error was 0.38%.
+
+A two-thirds improvment, and this is also without any GridSearch or feature selection. This only confirms my pre-existing conviction that NCPC is the correct target.
+
+I may repeat this comparison with other model types and more advanced models.
+
+
+
+
+Could also run simple classification of directionality, and compare that to imputed directionality from the NCPC regression models.
+
+
+
+
+
+
+
 ANALYSIS METRICS
 
 GROUP BY - 
