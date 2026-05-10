@@ -14,3 +14,4 @@ stock_prediction/combined_daily_data.csv
 stock_prediction/models_daily/
 stock_prediction/models_hourly/
 stock_prediction/.ipynb_checkpoints/combined_daily_data-checkpoints.csv
+stock_prediction/classification_daily_models/

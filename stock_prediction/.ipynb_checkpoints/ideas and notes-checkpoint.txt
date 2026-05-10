@@ -2,34 +2,11 @@ NOTES AND IDEAS
 
 
 
-My target is next_close_pct_change. Should I relabel this as 'NCPC' for the sake of visual cleanliness?
 
 
-Currently, my target, next_close_pct_change, is being calculated in the modeling notebooks. Will add that to ETL notebook to have ready in advance.
-
-
-
-
-
-For the Random Forest, I have kept results from a previous attempt in which I used the raw next_close as the target. I imputed the implied percentage change from those results, and compared them to the newer version in which NCPC was the target.
-
-The raw target's mean error was 2.19% and the median error was 1.27%.
-The pct target's mean error was 0.72% and the median error was 0.38%.
-
-A two-thirds improvment, and this is also without any GridSearch or feature selection. This only confirms my pre-existing conviction that NCPC is the correct target.
-
-I may repeat this comparison with other model types and more advanced models.
-
-
-
-
-Could also run simple classification of directionality, and compare that to imputed directionality from the NCPC regression models.
-
-
-
-
-
-
+CURRENTLY MY DATASET WITH MAX FEATURES IS NAMED
+daily_data_5y_30k_features1
+This is the name to search for in ETL cleaning notebooks, and loading, if I want to clean it up and add more features.
 
 
 
@@ -48,8 +25,70 @@ Were understimations or overestimations more common?
 
 
 
-Should hourly data directly interact with the daily models?
 
+
+Rough versions of Linreg, Random Forest, and others are being saved
+They will be loaded into the Feature Selection notebook
+I will see which features, on average, are correlated to higher errors.
+Or should they be broken down by model?
+
+Should I also be saving analysis aggregations (day of week, month, week_of) as their own dataframes?
+
+Might make more sense to store a command as a .txt file that can be called on in any notebook.
+
+
+
+
+
+During troubleshooting, I mistakenly overwrote Facebook data from before its rebrand to META, and consequently lost a few days in the raw data. The combined dataset, after cleaning in which previous rows are changed to META, is unaffected.
+
+
+
+
+
+
+
+My target is next_close_pct_change. Should I relabel this as 'NCPC' for the sake of visual cleanliness?
+
+
+Currently, my target, next_close_pct_change, is being calculated in the modeling notebooks. I will attempt to add these to the ETL notebook to have ready in advance as this seems like better practice. Was having an issue with results changing but suspect this was actually due to loading the wrong file. Will have to do testing to make sure.
+
+
+
+
+
+
+
+
+For the Random Forest, I have kept results from a previous attempt in which I used the raw next_close as the target. I imputed the implied percentage change from those results, and compared them to the newer version in which NCPC was the target.
+
+The raw target's mean error was 2.19% and the median error was 1.27%.
+The pct target's mean error was 0.72% and the median error was 0.38%.
+
+A two-thirds improvment, and without any GridSearch or feature refinement. 
+
+I also attempted a classification model in which I merely predicted whether next_close would be positive or negative. Accuracy was only 50.1%. In my NCPC regression model, 99% of rows were directionally correct.
+
+These figures only confirms my pre-existing conviction that NCPC is the correct target.
+
+I may repeat this comparison with other model types and more advanced models.
+
+(If I want to do more classification/directionality comparison, will have to fix merging. Probably not important for now.)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Should hourly data directly interact with the daily models? To what extent?
 
 
 
@@ -59,9 +98,6 @@ Will have to refine my modeling codeblocks to be instantly compatible with multi
 
 
 
-
-
-During troubleshooting, I mistakenly overwrote Facebook data from before its rebrand to META, and consequently lost a few days in the raw data. The combined dataset, after cleaning in which previous rows are changed to META, is unaffected.
 
 
 
@@ -97,12 +133,10 @@ I will measure each model by test-validation falloff.
 
 
 
+
+
 My first models are with the full dataset and all calculated features.
 Potentially, another feature set could contain only features correlated to a low error rate.
-
-
-
-
 
 
 
