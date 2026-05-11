@@ -112,7 +112,7 @@ Those same 397 stocks have also been downloaded with full hourly data.
 
 My full daily dataset stretches from 2021-05-05 to 2026-05-01.
 
-After calculating SMAs up to 100 days, as well as dropping the final row per ticker for which next_close does not exist, the span is from 2021-07-15 to 2026-04-30.
+After calculating SMAs up to 100 days (which eventually resluted in dropping the earliest rows for which it was impossible to calculate SMA100), as well as dropping the final row per ticker for which next_close does not exist, the span is from 2021-07-15 to 2026-04-30.
 
 
 
