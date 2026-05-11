@@ -3,6 +3,13 @@ NOTES AND IDEAS
 
 
 
+Not saving my models in round 1, no point since they are just defaults, no optimization except random_state=42.
+
+
+May have to skip SVM going forward. Took almost 3 hours to run and was vastly worse than the other models.
+
+
+
 
 CURRENTLY MY DATASET WITH MAX FEATURES IS NAMED
 daily_data_5y_30k_features1
@@ -60,6 +67,8 @@ Currently, my target, next_close_pct_change, is being calculated in the modeling
 
 
 
+
+THESE NUMBERS HAVE CHANGED
 For the Random Forest, I have kept results from a previous attempt in which I used the raw next_close as the target. I imputed the implied percentage change from those results, and compared them to the newer version in which NCPC was the target.
 
 The raw target's mean error was 2.19% and the median error was 1.27%.
