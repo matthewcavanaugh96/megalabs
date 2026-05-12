@@ -3,10 +3,21 @@ NOTES AND IDEAS
 
 
 
+For my feature_quality scoring, each model should have an input weight tied to its accuracy.
+
+
+
+
 Not saving my models in round 1, no point since they are just defaults, no optimization except random_state=42.
 
 
 May have to skip SVM going forward. Took almost 3 hours to run and was vastly worse than the other models.
+
+
+
+
+
+
 
 
 
