@@ -2,6 +2,13 @@ NOTES AND IDEAS
 
 
 
+Recommended to add
+
+Lasso
+LightGBM
+CatBoost
+
+
 
 For my feature_quality scoring, each model should have an input weight tied to its accuracy.
 
