@@ -2,6 +2,25 @@ NOTES AND IDEAS
 
 
 
+After Round 1, the following features had significantly inferior performance, and were thus dropped: 'volume', 'rolling_volatility', 'daily_high_vs_low_pct'
+
+A few other features were slightly negative. I'll keep them for Round 2, but they are on notice:
+
+'return_lag1', 'close_vs_open_pct', 'prev_day_return', transactions'
+
+
+
+
+
+
+
+Recommended to add
+
+Lasso
+LightGBM
+CatBoost
+
+
 
 For my feature_quality scoring, each model should have an input weight tied to its accuracy.
 
