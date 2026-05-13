@@ -2,12 +2,27 @@ NOTES AND IDEAS
 
 
 
+
+I am a bit stumped.
+
+My strategy, after a slight feature reduction, was to run GridSearch for several metrics (R2, MAE etc) for each type of model. However, this is taking close to an hour for each one, and performance is not improving.
+
+
+Do I need to be more aggressive with feature selection?
+
+
+
 After Round 1, the following features had significantly inferior performance, and were thus dropped: 'volume', 'rolling_volatility', 'daily_high_vs_low_pct'
 
 A few other features were slightly negative. I'll keep them for Round 2, but they are on notice:
 
 'return_lag1', 'close_vs_open_pct', 'prev_day_return', transactions'
 
+
+
+
+
+Regression GridSearch metrics:
 
 
 
