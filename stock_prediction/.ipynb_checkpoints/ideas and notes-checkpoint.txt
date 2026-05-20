@@ -2,6 +2,15 @@ NOTES AND IDEAS
 
 
 
+ADDITIONAL ENDPOINTS FOR REDOWNLOAD
+symbol, name, exchange, country
+
+
+
+
+
+
+
 
 I am a bit stumped.
 
