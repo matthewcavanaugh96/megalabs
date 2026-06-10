@@ -5,7 +5,7 @@ st.set_page_config(page_title="Stock Trends", page_icon="📈", layout="centered
 
 st.title("Stock Data")
 st.write("""
-I downloaded five years of stock data (2021-05-24 to 2026-05-21). The dataset features 2784 NASADQ and NYSE stocks with 1255 trading days for each. 
+I downloaded five years of daily stock data (2021-05-24 to 2026-05-21) from the Massive.com (formerly Polygon.io) API. After deleting any stocks with nulls or missing days, the dataset stands at 2784 NASADQ and NYSE stocks with 1255 trading days for each. 
 """)
 
 
@@ -124,8 +124,43 @@ We will run comparisons with seven major technology stocks: AAPL, AMZN, GOOGL, M
 
 
 st.write("""
-    1. Relative changes for seven tech stocks over a 5 year span. Each stock is measured by its own value relative to the first day of the dataset; therefore, each stock starts in the same place.
+    1. Relative changes for seven tech stocks over one-year and five-year spans. Each stock is measured by its own value relative to the first day of the dataset; therefore, each stock starts in the same place.
 """)
+
+
+# One year span - Relative price comparison
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+
+tech_stocks = ['AMZN', 'AAPL', 'GOOGL', 'META', 'MSFT', 'NFLX', 'NVDA']
+
+master_df = df_daily_1_yr
+
+#plt.figure(figsize=(14, 7))
+fig, ax = plt.subplots(figsize=(14, 7))
+
+
+for stock in tech_stocks:
+    stock_df = master_df[master_df['ticker'] == stock]
+    plt.plot(stock_df['timestamp'], stock_df['close_pct_of_day1'], label=stock)
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Closing Price')
+    ax.set_title(
+    f'Relative price changes for seven stocks over a one year span\n'
+    f'{(master_df['timestamp'].min()):%Y/%m/%d} = 100')
+    plt.legend()
+
+# plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=3))
+# plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
+ax.xaxis.set_major_locator(mdates.MonthLocator(interval=3))
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
+
+
+plt.xticks(rotation=45)
+ax.grid()
+st.pyplot(fig)
+
+
 
 
 # Five year span - Relative price comparison
@@ -147,7 +182,7 @@ for stock in tech_stocks:
     ax.set_ylabel('Closing Price')
     ax.set_title(
     f'Relative price changes for seven stocks over a five year span\n'
-    f'{(master_df['timestamp'].min()):%Y/%m/%d} = 100%')
+    f'{(master_df['timestamp'].min()):%Y/%m/%d} = 100')
     plt.legend()
 
 # plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=3))
@@ -170,7 +205,7 @@ st.pyplot(fig)
 
 # Positive change probability after threshold change
 st.write("""
-2. What is the probability that each of these stocks will see a positive move after a previous positive change over a given threshold?
+2a. What is the probability that each of these stocks will see a positive move after a previous positive change over a given threshold?
 """)
 
 ticker_list = ['AAPL', 'NVDA', 'NFLX', 'AMZN', 'GOOGL', 'META', 'MSFT']
@@ -202,7 +237,7 @@ for ticker in ticker_list:
 
         results.append({
             'ticker': ticker,
-            'increase_threshold': threshold,
+            'pct_increase_threshold': threshold,
             'pos_change_prob': pos_change_prob,
             'days_with_growth_threshold': days_with_growth_threshold,
             'days_w_both_conditions': days_w_both_conditions
@@ -211,6 +246,59 @@ for ticker in ticker_list:
 change_threshold_df = pd.DataFrame(results)
 
 st.dataframe(change_threshold_df)
+
+
+# =========================================================
+# =========================================================
+# =========================================================
+# =========================================================
+
+
+# Negative change probability after threshold change
+st.write("""
+2b. What is the probability that each of these stocks will see a negative move after a previous negative change over a given threshold?
+""")
+
+ticker_list = ['AAPL', 'NVDA', 'NFLX', 'AMZN', 'GOOGL', 'META', 'MSFT']
+
+thresholds = 2, 3, 4, 5, 6, 10, 20
+
+master_df = df_daily_5_yr
+
+results = []
+
+for ticker in ticker_list:
+    ticker_df = master_df[master_df['ticker'] == ticker]
+
+    for threshold in thresholds:
+        prev_change_condition = ticker_df['pct_change_from_prev'] <= threshold
+        next_change_condition = ticker_df['next_close_pct_change'] < 0
+
+        full_condition = prev_change_condition & next_change_condition
+
+        days_w_both_conditions = full_condition.sum()
+        days_with_growth_threshold = prev_change_condition.sum()
+
+        if days_with_growth_threshold > 0:
+            pos_change_prob = (
+                days_w_both_conditions / days_with_growth_threshold
+            ) * 100
+        else:
+            pos_change_prob = None
+
+        results.append({
+            'ticker': ticker,
+            'pct_decrease_threshold': threshold,
+            'pos_change_prob': pos_change_prob,
+            'days_with_growth_threshold': days_with_growth_threshold,
+            'days_w_both_conditions': days_w_both_conditions
+        })
+
+change_threshold_df = pd.DataFrame(results)
+
+st.dataframe(change_threshold_df)
+
+
 
 
 # =========================================================
@@ -241,7 +329,7 @@ super_safe_df.head(10)
 
 # Positive change probability after consecutive positive days
 st.write("""
-3. What is the probability that each stock will see a positive move after a given number of consecutive positive days?
+3a. What is the probability that each stock will see a positive move after a given number of consecutive positive days?
 """)
 
 ticker_list = ['AAPL', 'NVDA', 'NFLX', 'AMZN', 'GOOGL', 'META', 'MSFT']
@@ -258,6 +346,59 @@ for ticker in ticker_list:
     for threshold in thresholds:
         prev_change_condition = ticker_df['pct_change_from_prev'] >= threshold
         next_change_condition = ticker_df['next_close_pct_change'] >= 0
+
+        full_condition = prev_change_condition & next_change_condition
+
+        days_w_both_conditions = full_condition.sum()
+        days_with_consec_threshold = prev_change_condition.sum()
+
+        if days_with_consec_threshold > 0:
+            pos_change_prob = (
+                days_w_both_conditions / days_with_consec_threshold
+            ) * 100
+        else:
+            pos_change_prob = None
+
+        results.append({
+            'ticker': ticker,
+            'consec_days_threshold': threshold,
+            'pos_change_prob': pos_change_prob,
+            'days_with_consec_threshold': days_with_consec_threshold,
+            'days_w_both_conditions': days_w_both_conditions
+        })
+
+consec_threshold_df = pd.DataFrame(results)
+
+st.dataframe(consec_threshold_df)
+
+
+
+# =========================================================
+# =========================================================
+# =========================================================
+# =========================================================
+
+
+
+# Positive change probability after consecutive positive days
+st.write("""
+3b. What is the probability that each stock will see a negative move after a given number of consecutive negative days?
+""")
+
+ticker_list = ['AAPL', 'NVDA', 'NFLX', 'AMZN', 'GOOGL', 'META', 'MSFT']
+
+thresholds = 2, 3, 4, 5, 6, 10, 20
+
+master_df = super_safe_df
+
+results = []
+
+for ticker in ticker_list:
+    ticker_df = master_df[master_df['ticker'] == ticker]
+
+    for threshold in thresholds:
+        prev_change_condition = ticker_df['pct_change_from_prev'] <= threshold
+        next_change_condition = ticker_df['next_close_pct_change'] < 0
 
         full_condition = prev_change_condition & next_change_condition
 
@@ -479,8 +620,230 @@ st.pyplot(fig)
 # #plt.savefig("name.png")
 # plt.show()
 
+# =========================================================
+# =========================================================
+# =========================================================
+# =========================================================
 
 
+
+# # SAFE VERSION WORKED
+
+# st.title("""General statistics""")
+
+# st.write("""
+# What are the most trending stocks? Let's see which stocks increased the most over the entire dataset.
+# """)
+
+# st.write("""
+# SAFE VERSION WORKED
+# """)
+
+# import matplotlib.pyplot as plt
+# import matplotlib.dates as mdates
+
+# recent_day_df = df_daily_5_yr[df_daily_5_yr['timestamp'] == df_daily_5_yr['timestamp'].max()]
+# strongest_df = recent_day_df.nlargest(10, 'close_pct_of_day1')
+# plot_stocks = strongest_df['ticker'].unique().tolist()
+
+# master_df = df_daily_5_yr
+
+# plt.figure(figsize=(14, 7))
+
+# fig, ax = plt.subplots(figsize=(12, 8))
+
+# for stock in plot_stocks:
+#     stock_df = master_df[master_df['ticker'] == stock]
+#     plt.plot(stock_df['timestamp'], stock_df['close'], label=stock)
+#     plt.xlabel('Date')
+#     plt.ylabel('Closing Price')
+#     plt.title(
+#     f'Strongest trending stocks by percentage over a five-year span')
+#     #f'{(master_df['timestamp'].min()):%Y/%m/%d} = 100%')
+#     plt.legend()
+
+# # ax.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=3))
+# # ax.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
+
+# ax.xaxis.set_major_locator(mdates.MonthLocator(interval=3))
+# ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
+
+
+# plt.xticks(rotation=45)
+# ax.grid()
+
+# st.pyplot(fig)
+
+# =========================================================
+# =========================================================
+# =========================================================
+# =========================================================
+
+# Legend test
+
+st.title("""General statistics""")
+
+
+
+
+# =========================================================
+# =========================================================
+# =========================================================
+# =========================================================
+
+st.write("""
+Let's see which stocks improved most on the last day of the dataset.
+""")
+
+recent_day_df = df_daily_5_yr[df_daily_5_yr['timestamp'] == df_daily_5_yr['timestamp'].max()]
+recent_day_df = recent_day_df[['timestamp', 'ticker', 'name', 'market_cap', 'close', 'pct_change_from_prev', 'close_pct_of_day1']]
+most_recent_impr = recent_day_df.nlargest(10, 'pct_change_from_prev')
+most_recent_impr.sort_values(by='pct_change_from_prev', ascending=False)
+most_recent_impr = most_recent_impr[['ticker', 'name', 'pct_change_from_prev', 'close']]
+st.dataframe(most_recent_impr)
+
+st.write("""
+Now we will repeat the same analysis, but with a minimum market capitalization of $5 billion.
+""")
+
+recent_day_df = df_daily_5_yr[df_daily_5_yr['timestamp'] == df_daily_5_yr['timestamp'].max()]
+recent_day_df = recent_day_df[['timestamp', 'ticker', 'name', 'market_cap', 'close', 'pct_change_from_prev', 'close_pct_of_day1']]
+
+marcap_df = recent_day_df[recent_day_df['market_cap'] >= 5000000000]
+most_recent_impr_marcap = marcap_df.nlargest(10, 'pct_change_from_prev')
+most_recent_impr_marcap.sort_values(by='pct_change_from_prev', ascending=False)
+most_recent_impr_marcap = most_recent_impr_marcap[['ticker', 'name', 'pct_change_from_prev', 'close']]
+st.dataframe(most_recent_impr_marcap)
+
+st.write("""
+The daily increases become much more subdued when applying the market cap filter. Absolute prices are also higher, which may be owed to these stocks being more established and thus less prone to wild daily swings.
+""")
+
+
+# =========================================================
+# =========================================================
+# =========================================================
+# =========================================================
+
+
+
+st.write("""
+Now let's see which stocks increased the most over the entire dataset. For this part, I rendered the data as visualizations.
+""")
+
+
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+
+recent_day_df = df_daily_5_yr[df_daily_5_yr['timestamp'] == df_daily_5_yr['timestamp'].max()]
+strongest_df = recent_day_df.nlargest(10, 'close_pct_of_day1')
+plot_stocks = strongest_df['ticker'].unique().tolist()
+
+master_df = df_daily_5_yr
+
+ticker_to_name = (
+    master_df[['ticker', 'name']]
+    .drop_duplicates()
+    .set_index('ticker')['name']
+    .to_dict()
+)
+
+plt.figure(figsize=(14, 7))
+
+fig, ax = plt.subplots(figsize=(12, 8))
+
+for stock in plot_stocks:
+    stock_df = master_df[master_df['ticker'] == stock]
+    
+    plt.plot(
+        stock_df['timestamp'],
+        stock_df['close'],
+        label=f"{stock} ({ticker_to_name[stock]})"
+    )   
+    plt.xlabel('Date')
+    plt.ylabel('Closing Price')
+    plt.title(
+    f'Strongest trending stocks over a five-year span')
+    #f'{(master_df['timestamp'].min()):%Y/%m/%d} = 100%')
+    plt.legend()
+
+# ax.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=3))
+# ax.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
+
+ax.xaxis.set_major_locator(mdates.MonthLocator(interval=3))
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
+
+
+plt.xticks(rotation=45)
+ax.grid()
+
+st.pyplot(fig)
+
+# =========================================================
+# =========================================================
+# =========================================================
+# =========================================================
+
+st.write("""
+Once again, let's apply the market cap filter.
+""")
+
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+
+recent_day_df = df_daily_5_yr[df_daily_5_yr['timestamp'] == df_daily_5_yr['timestamp'].max()]
+min_market_cap_df = recent_day_df[recent_day_df['market_cap'] >= 5000000000]
+strongest_df = min_market_cap_df.nlargest(10, 'close_pct_of_day1')
+plot_stocks = strongest_df['ticker'].unique().tolist()
+
+master_df = df_daily_5_yr
+
+ticker_to_name = (
+    master_df[['ticker', 'name']]
+    .drop_duplicates()
+    .set_index('ticker')['name']
+    .to_dict()
+)
+
+plt.figure(figsize=(14, 7))
+
+fig, ax = plt.subplots(figsize=(12, 8))
+
+for stock in plot_stocks:
+    stock_df = master_df[master_df['ticker'] == stock]
+    
+    plt.plot(
+        stock_df['timestamp'],
+        stock_df['close'],
+        label=f"{stock} ({ticker_to_name[stock]})"
+    )   
+    plt.xlabel('Date')
+    plt.ylabel('Closing Price')
+    plt.title(
+    f'Strongest trending stocks over a five-year span\n(Minimum market cap $5 billion)')
+    #f'{(master_df['timestamp'].min()):%Y/%m/%d} = 100%')
+    plt.legend()
+
+# ax.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=3))
+# ax.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
+
+ax.xaxis.set_major_locator(mdates.MonthLocator(interval=3))
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
+
+
+plt.xticks(rotation=45)
+ax.grid()
+
+st.pyplot(fig)
+
+
+
+
+
+# = most_recent_impr[most_recent_impr['market_cap'] >= 5000000000]
+# most_recent_impr_marcap.sort_values(by='pct_change_from_prev', ascending=False)
+# most_recent_impr_marcap = most_recent_impr_marcap[['ticker', 'name', 'pct_change_from_prev', 'close']]
+# st.dataframe(most_recent_impr_marcap)
 
 
 
@@ -492,7 +855,7 @@ st.pyplot(fig)
 
 st.title("""Build your own!""")
 st.write("""
-Search for stocks and build your own plot to see their price changes!
+Search for stocks and build your own plot to see their price changes! The graph may take a moment to load.
 """)
 
 import streamlit as st
@@ -532,7 +895,7 @@ if 'selected_stocks' not in st.session_state:
     st.session_state.selected_stocks = default_selection
 
 # Randomize button
-if st.button('🎲 Random 5 Stocks'):
+if st.button('🎲 Choose 5 random stocks'):
     st.session_state.selected_stocks = random.sample(
         stock_lookup['display_name'].tolist(),
         min(5, len(stock_lookup))

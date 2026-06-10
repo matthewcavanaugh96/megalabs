@@ -17,3 +17,4 @@ stock_prediction/models_daily/
 stock_prediction/models_hourly/
 stock_prediction/.ipynb_checkpoints/combined_daily_data-checkpoints.csv
 stock_prediction/classification_daily_models/
+stock_prediction/zzz_for_aws/
