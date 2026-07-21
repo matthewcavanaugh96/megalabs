@@ -1,0 +1,128 @@
+
+import pandas as pd
+
+
+
+from pathlib import Path
+import pandas as pd
+
+APP_DIR = Path(__file__).resolve().parent
+
+price_path = APP_DIR / "daily_cleaned_price_data.csv"
+metadata_path = APP_DIR / "daily_cleaned_metadata.csv"
+
+df_price = pd.read_csv(price_path)
+df_metadata = pd.read_csv(metadata_path)
+
+
+
+
+# ==================
+# OLD OLD OLD DATA LOADING
+# ==================
+# main_df = pd.read_csv('daily_cleaned_price_data.csv')
+# metadata_df = pd.read_csv('daily_cleaned_metadata.csv')
+
+
+df = df_price.merge(
+     df_metadata,
+     on='ticker',
+     how='left'
+)
+
+df
+
+
+# Ensure timestamp
+df['timestamp'] = pd.to_datetime(df['timestamp'])
+
+
+# Calculate SMAs
+SMA_thresholds = 10, 20, 50, 100
+
+for threshold in SMA_thresholds:
+    df[f'SMA{threshold}'] = (
+        df.groupby('ticker')['close']
+        .transform(lambda x: x.rolling(threshold).mean())
+    )
+
+
+# Pct change from previous day and to next day
+df['pct_change_from_prev'] = (
+    df.groupby('ticker')['close']
+    .pct_change() * 100
+)
+
+df['next_close_pct_change'] = (
+    (
+        df.groupby('ticker')['close']
+        .shift(-1)
+        / df['close']
+    - 1
+    ) * 100
+)
+
+
+# MOST ADDITIONAL METRICS, IF ANY, CAN BE DONE AROUND HERE
+
+
+# Create dataframes covering different timespans
+# Will also create variations dropping nulls
+
+from dateutil.relativedelta import relativedelta
+import pandas as pd
+
+# Ensure datetime
+df['timestamp'] = pd.to_datetime(df['timestamp'])
+
+max_date = df['timestamp'].max()
+
+year_thresholds = [1, 2, 5]
+
+# Master dictionary to store all created dfs
+dfs = {}
+
+for years in year_thresholds:
+
+    # Main dataframe
+    df_name = f'df_daily_{years}_yr'
+
+    dfs[df_name] = (
+        df[
+            df['timestamp'] >= max_date - relativedelta(years=years)
+        ].copy()
+    )
+
+    # Also create standalone variable
+    globals()[df_name] = dfs[df_name]
+
+    print(df_name)
+    print(dfs[df_name].shape)
+
+    # Create no-null version only if nulls exist
+    if dfs[df_name].isnull().values.any():
+
+        no_null_name = f'{df_name}_no_null'
+
+        dfs[no_null_name] = (
+            dfs[df_name]
+            .dropna()
+            .copy()
+        )
+
+        # Also create standalone variable
+        globals()[no_null_name] = dfs[no_null_name]
+
+        print(no_null_name)
+        print(dfs[no_null_name].shape)
+
+
+
+# For each of the created dataframes, calculate change from day one
+# This has to be done last as dataframes now have different start days
+for name, df in dfs.items():
+    df['close_pct_of_day1'] = (df.groupby('ticker')['close'].transform(lambda x: (x / x.iloc[0]) * 100))
+
+
+
+
