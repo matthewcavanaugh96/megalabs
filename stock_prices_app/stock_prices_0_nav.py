@@ -13,9 +13,9 @@ interactive = st.Page("stock_prices_3_interactive.py", title="Make your own plot
 mod_overview = st.Page("stock_prices_4_mod_overview.py", title="Modeling Overview", icon="🤔")
 mod_results = st.Page("stock_prices_5_mod_results.py", title="Modeling Results", icon="🧠")
 mod_comp = st.Page("stock_prices_6_mod_comp.py", title="Model Comparison and Aggregates", icon="🤼‍♂️")
-test_page = st.Page("stock_prices_99_test.py", title="Future ideas and experiments", icon="🧪")
+#test_page = st.Page("stock_prices_99_test.py", title="Future ideas and experiments", icon="🧪")
 
 
 # Set up navigation
-nav = st.navigation([home, eda, interactive, mod_overview, mod_results, mod_comp, test_page])
+nav = st.navigation([home, eda, interactive, mod_overview, mod_results, mod_comp])
 nav.run()

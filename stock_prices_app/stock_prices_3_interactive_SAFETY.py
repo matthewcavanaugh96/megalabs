@@ -1,0 +1,532 @@
+import streamlit as st
+import pandas as pd
+
+from pathlib import Path
+
+
+
+
+
+# CURRENT_DIR = Path(__file__).resolve().parent
+# COMMAND_FILE = CURRENT_DIR / "COMMAND_load_merge_transform.txt"
+
+# with open(COMMAND_FILE, "r") as file:
+#     command = file.read()
+
+# exec(command)
+
+
+
+
+
+
+
+
+
+
+st.title("""Make your own plots!""")
+
+
+
+import random
+
+import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
+import pandas as pd
+import streamlit as st
+
+
+# ---------------------------------------------------------
+# Load data
+# ---------------------------------------------------------
+
+@st.cache_data
+def load_stock_data():
+    df = pd.read_parquet(
+        "daily_cleaned_price_data.parquet",
+        columns=["timestamp", "ticker", "name", "close", "close_pct_of_day1"]
+    )
+
+    df["timestamp"] = pd.to_datetime(df["timestamp"])
+
+    return df
+
+
+df_daily_5_yr = load_stock_data()
+
+
+# ---------------------------------------------------------
+# Create ticker/name lookup tables
+# ---------------------------------------------------------
+
+stock_lookup = (
+    df_daily_5_yr[["ticker", "name"]]
+    .drop_duplicates(subset="ticker")
+    .sort_values("ticker")
+    .reset_index(drop=True)
+)
+
+stock_lookup["display_name"] = (
+    stock_lookup["ticker"]
+    + " ("
+    + stock_lookup["name"].fillna("Unknown")
+    + ")"
+)
+
+display_names = stock_lookup["display_name"].tolist()
+
+display_to_ticker = dict(
+    zip(stock_lookup["display_name"], stock_lookup["ticker"])
+)
+
+ticker_to_display = dict(
+    zip(stock_lookup["ticker"], stock_lookup["display_name"])
+)
+
+
+# ---------------------------------------------------------
+# Default selection
+# ---------------------------------------------------------
+
+if "AAPL" in ticker_to_display:
+    default_selection = [ticker_to_display["AAPL"]]
+else:
+    default_selection = []
+
+
+# ---------------------------------------------------------
+# Session-state initialization
+# ---------------------------------------------------------
+
+# Current contents of the multiselect
+if "raw_stock_selector" not in st.session_state:
+    st.session_state.raw_stock_selector = default_selection
+
+# Stocks used in the most recently generated graph
+if "raw_plot_tickers" not in st.session_state:
+    st.session_state.raw_plot_tickers = []
+
+
+# ---------------------------------------------------------
+# Button callbacks
+# ---------------------------------------------------------
+
+def choose_random_stocks():
+    st.session_state.raw_stock_selector = random.sample(
+        display_names,
+        min(5, len(display_names))
+    )
+
+
+def clear_stock_selection():
+    st.session_state.raw_stock_selector = []
+
+
+# ---------------------------------------------------------
+# Raw-price plot controls
+# ---------------------------------------------------------
+
+st.subheader("First plot — raw prices")
+
+st.write(
+    """
+    Search for stocks and build your own plot to compare their closing prices.
+    Select the stocks first, then click **Generate plot**.
+    """
+)
+
+button_col1, button_col2 = st.columns(2)
+
+with button_col1:
+    st.button(
+        "🎲 Choose 5 random stocks",
+        on_click=choose_random_stocks,
+        use_container_width=True
+    )
+
+with button_col2:
+    st.button(
+        "Clear selection",
+        on_click=clear_stock_selection,
+        use_container_width=True
+    )
+
+
+selected_display_names = st.multiselect(
+    "Search for one or more stocks",
+    options=display_names,
+    key="raw_stock_selector"
+)
+
+
+# ---------------------------------------------------------
+# Generate button
+# ---------------------------------------------------------
+
+if st.button(
+    "Generate raw-price plot",
+    type="primary",
+    use_container_width=True
+):
+    selected_tickers = [
+        display_to_ticker[display_name]
+        for display_name in selected_display_names
+    ]
+
+    if selected_tickers:
+        st.session_state.raw_plot_tickers = selected_tickers
+    else:
+        st.warning("Choose at least one stock before generating the plot.")
+
+
+# ---------------------------------------------------------
+# Display the most recently generated plot
+# ---------------------------------------------------------
+
+plotted_tickers = st.session_state.raw_plot_tickers
+
+if not plotted_tickers:
+    st.info("Choose at least one stock and click **Generate raw-price plot**.")
+
+else:
+    plot_df = df_daily_5_yr.loc[
+        df_daily_5_yr["ticker"].isin(plotted_tickers),
+        ["timestamp", "ticker", "close"]
+    ]
+
+    fig, ax = plt.subplots(figsize=(12, 8))
+
+    for ticker, stock_df in plot_df.groupby("ticker", sort=False):
+        stock_df = stock_df.sort_values("timestamp")
+
+        ax.plot(
+            stock_df["timestamp"],
+            stock_df["close"],
+            label=ticker_to_display.get(ticker, ticker)
+        )
+
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Closing price ($)")
+    ax.set_title("Stock closing prices over five years")
+
+    ax.xaxis.set_major_locator(
+        mdates.MonthLocator(interval=3)
+    )
+
+    ax.xaxis.set_major_formatter(
+        mdates.DateFormatter("%Y-%m")
+    )
+
+    ax.tick_params(axis="x", rotation=45)
+    ax.grid(True, alpha=0.3)
+    ax.legend()
+
+    fig.tight_layout()
+
+    st.pyplot(fig)
+
+    plt.close(fig)
+
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+
+
+# ---------------------------------------------------------
+# Second plot — relative price change
+# Day 1 = 100
+# ---------------------------------------------------------
+
+st.divider()
+
+st.subheader("Second plot — relative price performance")
+
+st.write(
+    """
+    Compare stocks on the same scale. Each stock begins at **100**, making it
+    easier to compare percentage growth regardless of the stock's actual price.
+    """
+)
+
+
+# ---------------------------------------------------------
+# Session-state initialization
+# ---------------------------------------------------------
+
+# Current contents of the second multiselect
+if "relative_stock_selector" not in st.session_state:
+    st.session_state.relative_stock_selector = default_selection
+
+# Stocks used in the most recently generated relative graph
+if "relative_plot_tickers" not in st.session_state:
+    st.session_state.relative_plot_tickers = []
+
+
+# ---------------------------------------------------------
+# Button callbacks
+# ---------------------------------------------------------
+
+def choose_random_relative_stocks():
+    st.session_state.relative_stock_selector = random.sample(
+        display_names,
+        min(5, len(display_names))
+    )
+
+
+def clear_relative_stock_selection():
+    st.session_state.relative_stock_selector = []
+
+
+# ---------------------------------------------------------
+# Selection controls
+# ---------------------------------------------------------
+
+relative_button_col1, relative_button_col2 = st.columns(2)
+
+with relative_button_col1:
+    st.button(
+        "🎲 Choose 5 random stocks",
+        key="relative_random_button",
+        on_click=choose_random_relative_stocks,
+        use_container_width=True
+    )
+
+with relative_button_col2:
+    st.button(
+        "Clear selection",
+        key="relative_clear_button",
+        on_click=clear_relative_stock_selection,
+        use_container_width=True
+    )
+
+
+selected_relative_display_names = st.multiselect(
+    "Search for one or more stocks",
+    options=display_names,
+    key="relative_stock_selector"
+)
+
+
+# ---------------------------------------------------------
+# Generate relative-price plot
+# ---------------------------------------------------------
+
+if st.button(
+    "Generate relative-performance plot",
+    key="generate_relative_plot",
+    type="primary",
+    use_container_width=True
+):
+    selected_relative_tickers = [
+        display_to_ticker[display_name]
+        for display_name in selected_relative_display_names
+    ]
+
+    if selected_relative_tickers:
+        st.session_state.relative_plot_tickers = selected_relative_tickers
+    else:
+        st.warning(
+            "Choose at least one stock before generating the relative plot."
+        )
+
+
+# ---------------------------------------------------------
+# Display most recently generated relative plot
+# ---------------------------------------------------------
+
+relative_plot_tickers = st.session_state.relative_plot_tickers
+
+if not relative_plot_tickers:
+    st.info(
+        "Choose at least one stock and click "
+        "**Generate relative-performance plot**."
+    )
+
+else:
+    relative_plot_df = df_daily_5_yr.loc[
+        df_daily_5_yr["ticker"].isin(relative_plot_tickers),
+        [
+            "timestamp",
+            "ticker",
+            "close_pct_of_day1"
+        ]
+    ].copy()
+
+    fig, ax = plt.subplots(figsize=(12, 8))
+
+    for ticker, stock_df in relative_plot_df.groupby(
+        "ticker",
+        sort=False
+    ):
+        stock_df = stock_df.sort_values("timestamp")
+
+        ax.plot(
+            stock_df["timestamp"],
+            stock_df["close_pct_of_day1"],
+            label=ticker_to_display.get(ticker, ticker)
+        )
+
+    # Reference line showing the starting value
+    ax.axhline(
+        y=100,
+        linestyle="--",
+        linewidth=1,
+        alpha=0.7
+    )
+
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Relative closing price (day 1 = 100)")
+    ax.set_title("Relative stock performance over five years")
+
+    ax.xaxis.set_major_locator(
+        mdates.MonthLocator(interval=3)
+    )
+
+    ax.xaxis.set_major_formatter(
+        mdates.DateFormatter("%Y-%m")
+    )
+
+    ax.tick_params(axis="x", rotation=45)
+    ax.grid(True, alpha=0.3)
+    ax.legend()
+
+    fig.tight_layout()
+
+    st.pyplot(fig)
+
+    plt.close(fig)
+
+
+
+
+
+# SAFE BELOW
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+# ===============================
+
+
+# df_daily_5_yr = pd.read_parquet('daily_cleaned_price_data_CLOSE.parquet')
+
+# # First plot - raw prices
+# st.subheader("""First plot - raw prices""")
+
+# st.write("""
+# Search for stocks and build your own plot to see their price changes! The graph may take a moment to load.
+# """)
+
+
+# import streamlit as st
+# import pandas as pd
+# import matplotlib.pyplot as plt
+# import matplotlib.dates as mdates
+
+# df_daily_5_yr['timestamp'] = pd.to_datetime(df_daily_5_yr['timestamp'])
+
+# # Create ticker/name lookup table
+# stock_lookup = (
+#     df_daily_5_yr[['ticker', 'name']]
+#     .drop_duplicates()
+#     .sort_values('ticker')
+# )
+
+# stock_lookup['display_name'] = (
+#     stock_lookup['ticker'] + ' (' + stock_lookup['name'].fillna('Unknown') + ')'
+# )
+
+# display_to_ticker = dict(zip(stock_lookup['display_name'], stock_lookup['ticker']))
+
+
+# default_selection = []
+
+# if 'AAPL' in stock_lookup['ticker'].values:
+#     default_selection = stock_lookup.loc[
+#         stock_lookup['ticker'] == 'AAPL',
+#         'display_name'
+#     ].tolist()
+
+
+# import random
+
+# # Initialize session state
+# if 'selected_stocks' not in st.session_state:
+#     st.session_state.selected_stocks = default_selection
+
+# # Randomize button
+# if st.button('🎲 Choose 5 random stocks'):
+#     st.session_state.selected_stocks = random.sample(
+#         stock_lookup['display_name'].tolist(),
+#         min(5, len(stock_lookup))
+#     )
+
+# selected_display_names = st.multiselect(
+#     'Search for one or more stocks',
+#     options=stock_lookup['display_name'].tolist(),
+#     default=st.session_state.selected_stocks,
+#     key='stock_selector'
+# )
+
+# st.session_state.selected_stocks = selected_display_names
+
+# selected_tickers = [display_to_ticker[x] for x in selected_display_names]
+
+# if len(selected_tickers) == 0:
+#     st.info('Choose at least one stock to generate the plot.')
+#     st.stop()
+
+# plot_df = df_daily_5_yr[df_daily_5_yr['ticker'].isin(selected_tickers)]
+
+# fig, ax = plt.subplots(figsize=(12, 8))
+
+# for ticker in selected_tickers:
+#     stock_df = plot_df[plot_df['ticker'] == ticker].sort_values('timestamp')
+
+#     display_label = stock_lookup.loc[
+#         stock_lookup['ticker'] == ticker,
+#         'display_name'
+#     ].iloc[0]
+
+#     ax.plot(stock_df['timestamp'], stock_df['close'], label=display_label)
+
+# ax.set_xlabel('Date')
+# ax.set_ylabel('Closing Price')
+# ax.set_title('Stock prices over five years')
+# ax.xaxis.set_major_locator(mdates.MonthLocator(interval=3))
+# ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
+
+# plt.xticks(rotation=45)
+# ax.grid()
+# ax.legend()
+
+# st.pyplot(fig)
+
+
+

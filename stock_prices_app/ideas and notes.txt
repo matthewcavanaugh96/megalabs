@@ -1,0 +1,10 @@
+IDEAS AND NOTES
+
+
+
+
+
+I have devised a basic way to calculate an adjusted Feature Quality Score for each model.
+
+
+When I have multiple models, I could compare these against each other, perhaps weighing by the model's performance.
