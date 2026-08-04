@@ -66,7 +66,7 @@ ticker_to_display = dict(
 # Load only selected tickers from the large Parquet file
 # ---------------------------------------------------------
 
-@st.cache_data(max_entries=1, show_spinner="Loading selected stock data...")
+@st.cache_data(max_entries=4, show_spinner="Loading selected stock data...")
 def load_selected_stock_data(
     tickers: tuple[str, ...],
     value_column: str
@@ -156,8 +156,7 @@ with button_col2:
 selected_display_names = st.multiselect(
     "Search for one or more stocks",
     options=display_names,
-    key="raw_stock_selector",
-    max_selections=10
+    key="raw_stock_selector"
 )
 
 
@@ -284,8 +283,7 @@ with relative_button_col2:
 selected_relative_display_names = st.multiselect(
     "Search for one or more stocks",
     options=display_names,
-    key="relative_stock_selector",
-    max_selections=10
+    key="relative_stock_selector"
 )
 
 
