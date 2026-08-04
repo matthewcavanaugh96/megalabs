@@ -27,7 +27,7 @@ import streamlit as st
 @st.cache_data
 def load_stock_data():
     df = pd.read_parquet(
-        "daily_cleaned_price_data.parquet",
+        "daily_cleaned_price_data_CLOSE.parquet",
         columns=["timestamp", "ticker", "name", "close", "close_pct_of_day1"]
     )
 
