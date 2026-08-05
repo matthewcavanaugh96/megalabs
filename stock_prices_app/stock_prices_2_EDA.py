@@ -22,9 +22,8 @@ import pandas as pd
 # =========================================================
 
 # 1 - Apple raw prices
-st.title("Our first example")
 st.write("""
-Let's see AAPL's stock price over five years. 
+For our first example, let's see AAPL's stock price over five years. 
 """)
 
 

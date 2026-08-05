@@ -90,6 +90,8 @@ with tab1:
 with tab2:
     st.header("My decision making process")
     st.write("""
+
+    Overall, my intention is to find features that are likely to work well with ANY model.
     The target column, 'next_close_pct_change' obviously had to be excluded. Same for 'pct_change_from_prev' which is the exact same number, just shifted forward one day.
 
     Beyond this, my decision became a little trickier.
