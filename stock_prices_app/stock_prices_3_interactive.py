@@ -127,7 +127,7 @@ def clear_stock_selection():
     st.session_state.raw_stock_selector = []
 
 
-st.subheader("First plot — raw prices")
+st.subheader("Raw prices")
 
 st.write(
     """
@@ -234,7 +234,7 @@ else:
 
 st.divider()
 
-st.subheader("Second plot — relative price performance")
+st.subheader("Relative price performance")
 
 st.write(
     """

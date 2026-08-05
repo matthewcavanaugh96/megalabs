@@ -2,6 +2,7 @@ stock_prices_support_files/
 .DS_Store
 stock_prices_app/stock-prices.pem
 stock_prices_app/oversize_datasets/
+stock_prices_app/safety_copies/
 stock_prices_app/daily_cleaned_metadata.csv
 stock_prices_app/daily_cleaned_price_data.csv
 stock_prices_app/.ipynb_checkpoints/

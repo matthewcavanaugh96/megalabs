@@ -7,10 +7,7 @@ I downloaded five years of daily stock data (2021-05-24 to 2026-05-21) from the 
 
 st.title("Why do some analyses not go back as far?")
 st.write("""
-Some rows had nulls for certain metrics. This is the result of certain time-series metrics having insufficient days to calculate them. For example, SMA100 (a moving average of the previous 100 closing prices per stock) does not exist on day 99. I handled this by creating two versions of the dataset - one which retains these nulls, and one which drops them.
-
-For shorter versions of the dataset, such as the one-year and two-year segments, the column 'close_pct_of_day1' had to be calculated as the tables were created.
-
+Some rows had nulls for certain metrics. This is the result of certain time-series metrics having insufficient days to calculate them. For example, SMA100 (a moving average of the previous 100 closing prices per stock) does not exist on day 79. I handled this by creating two versions of the dataset - one which retains these nulls, and one which drops them.
 """)
 
 
@@ -50,22 +47,36 @@ st.image(img2)
 # 3 - Tech stocks raw prices
 st.title("Seven Tech Stocks")
 st.write("""
-We will run comparisons with seven major technology stocks: AAPL, AMZN, GOOGL, META, MSFT, NFLX, and NVDA.
+We will run various comparisons with seven major technology stocks: AAPL, AMZN, GOOGL, META, MSFT, NFLX, and NVDA.
 """)
-
 
 st.write("""
-    1. Relative changes for seven tech stocks over one-year and five-year spans. Each stock is measured by its own value relative to the first day of the dataset; therefore, each stock starts in the same place.
+Plotted below are absolute prices for the seven tech stocks over spans of one and five years.
 """)
 
-img3 = Image.open('visualizations/v03_tech_absolute.png')
-st.image(img3)
+img3a = Image.open('visualizations/v03a_tech_absolute_1yr.png')
+st.image(img3a)
+
+img3b = Image.open('visualizations/v03b_tech_absolute_5y.png')
+st.image(img3b)
+
+st.write("""
+Here, I instead plotted relative prices - each stock starts at 100 on the first day of the dataset and is subsequently measured relative to that benchmark.
+""")
 
 img4 = Image.open('visualizations/v04_tech_relative_1yr.png')
 st.image(img4)
 
 img5 = Image.open('visualizations/v05_tech_relative_5yr.png')
 st.image(img5)
+
+st.write("""
+In the five-year graph, you can see NVDA's staggering relative growth relative to the others over time. However, by absolute price, it is still on the lower end within this group.
+""")
+
+st.write("""
+I wanted to see what recent trends can tell us about the next few days. For each of the seven tech stocks, I measured the probability of a positive movement the day after several thresholds of gains, and then of negative movement after the same thresholds of negative movement. If no days met the gain or loss threshold for the stock, it will be marked N/A.
+""")
 
 img6 = Image.open('visualizations/v06_pos_prob_after_pct_pos.png')
 st.image(img6)
@@ -74,9 +85,16 @@ img7 = Image.open('visualizations/v07_neg_prob_after_pct_neg.png')
 st.image(img7)
 
 st.write("""
-Skipping 8 and 9 for time for now
+Below, see a similar analysis, but with the thresholds instead measuring consecutive days of positive or negative movement.
 """)
 
+st.write("""
+(Need to add 7 and 8)
+""")
+
+st.write("""
+To what extent are our tech stocks collinear with each other, and how does this differ from the dataset as a whole? 
+""")
 
 img10 = Image.open('visualizations/v10_correlation_all.png')
 st.image(img10)
@@ -86,9 +104,12 @@ img11 = Image.open('visualizations/v11_correlation_tech.png')
 st.image(img11)
 
 st.write("""
-I'll get back to 12 and 13 later
+(Need to add 12 and 13)
 """)
 
+st.write("""
+This visualization shows the ten stocks that improved the most in terms of actual price over the course of the entire dataset.
+""")
 
 img14 = Image.open('visualizations/v14_overall_improvement_top10.png')
 st.image(img14)
