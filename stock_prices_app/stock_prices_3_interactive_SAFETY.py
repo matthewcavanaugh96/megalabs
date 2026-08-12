@@ -153,24 +153,19 @@ with button_col2:
     )
 
 
-with st.form("raw_stock_form"):
-
-    selected_display_names = st.multiselect(
-        "Search for one or more stocks",
-        options=display_names,
-        key="raw_stock_selector",
-        max_selections=10
-    )
-
-    generate_raw = st.form_submit_button(
-        "Generate raw-price plot",
-        type="primary",
-        use_container_width=True
-    )
+selected_display_names = st.multiselect(
+    "Search for one or more stocks",
+    options=display_names,
+    key="raw_stock_selector",
+    max_selections=10
+)
 
 
-if generate_raw:
-
+if st.button(
+    "Generate raw-price plot",
+    type="primary",
+    use_container_width=True
+):
     selected_tickers = tuple(
         display_to_ticker[display_name]
         for display_name in selected_display_names
@@ -179,9 +174,7 @@ if generate_raw:
     if selected_tickers:
         st.session_state.raw_plot_tickers = selected_tickers
     else:
-        st.warning(
-            "Choose at least one stock before generating the plot."
-        )
+        st.warning("Choose at least one stock before generating the plot.")
 
 
 plotted_tickers = tuple(st.session_state.raw_plot_tickers)
@@ -288,69 +281,33 @@ with relative_button_col2:
     )
 
 
+selected_relative_display_names = st.multiselect(
+    "Search for one or more stocks",
+    options=display_names,
+    key="relative_stock_selector",
+    max_selections=10
+)
 
 
-# selected_relative_display_names = st.multiselect(
-#     "Search for one or more stocks",
-#     options=display_names,
-#     key="relative_stock_selector",
-#     max_selections=10
-# )
-
-
-# if st.button(
-#     "Generate relative-performance plot",
-#     key="generate_relative_plot",
-#     type="primary",
-#     use_container_width=True
-# ):
-#     selected_relative_tickers = tuple(
-#         display_to_ticker[display_name]
-#         for display_name in selected_relative_display_names
-#     )
-
-#     if selected_relative_tickers:
-#         st.session_state.relative_plot_tickers = (
-#             selected_relative_tickers
-#         )
-#     else:
-#         st.warning(
-#             "Choose at least one stock before generating the relative plot."
-#         )
-
-with st.form("relative_stock_form"):
-
-    selected_display_names = st.multiselect(
-        "Search for one or more stocks",
-        options=display_names,
-        key="relative_stock_selector",
-        max_selections=10
-    )
-
-    generate_relative = st.form_submit_button(
-        "Generate relative-price plot",
-        type="primary",
-        use_container_width=True
-    )
-
-
-if generate_relative:
-
-    selected_tickers = tuple(
+if st.button(
+    "Generate relative-performance plot",
+    key="generate_relative_plot",
+    type="primary",
+    use_container_width=True
+):
+    selected_relative_tickers = tuple(
         display_to_ticker[display_name]
-        for display_name in selected_display_names
+        for display_name in selected_relative_display_names
     )
 
-    if selected_tickers:
-        st.session_state.relative_plot_tickers = selected_tickers
+    if selected_relative_tickers:
+        st.session_state.relative_plot_tickers = (
+            selected_relative_tickers
+        )
     else:
         st.warning(
-            "Choose at least one stock before generating the plot."
+            "Choose at least one stock before generating the relative plot."
         )
-
-
-
-
 
 
 relative_plot_tickers = tuple(
