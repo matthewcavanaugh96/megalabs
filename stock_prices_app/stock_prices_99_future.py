@@ -1,6 +1,22 @@
 import streamlit as st
 
+st.title("Bonus page")
+st.write("""
+This is where I will put one-off analyses that don't fit elsewhere, future ideas, and experiements.
+""")
+
+
+st.subheader("Daily accuracy")
+st.write("""
+What did the ensemble model look like on a daily basis?
+""")
+
+st.image("visualizations/round_1_ensemble_daily_abs_error.png", caption="Ensemble average daily absolute error for all trading days in 2025. All models failed to predict the massive spike seen on April 9.", width=800)
+
+
+
 st.title("Future ideas")
+
 
 with st.expander("Hourly data"):
     st.write("""
