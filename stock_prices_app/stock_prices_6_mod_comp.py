@@ -42,6 +42,18 @@ For a future attempt, I will try using only the features above a CAFQS threshold
 
 I will add more models before that step.
 
-NOTE - Differetn types of models such as RNNs may not work for this comparison.
+NOTE - Different types of models such as RNNs may not work for this comparison.
 """)
 
+
+
+
+st.title("""
+Stumped
+""")
+
+st.write("""
+Using my Round 1 results, I have tried using the top three, two, and one quartiles. Accuracy is not exactly linear, so I am instead running accuracy with every possible list of Features, sorted by my adjusted Score from high to low, with each successive run cutting one from the bottom. When I can visualize the exact optimal number of features, I will run the model again with that.
+
+Still, I don't know how confident I am in finding a truly predictive model. Directional accuracy has been barely better than 50% with anything I've tried so far.
+""")
