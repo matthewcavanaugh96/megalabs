@@ -65,24 +65,24 @@ with tab1:
     """)
     
     
-    st.subheader("FULL LIST, UPDATE AS NEEDED THEN ENSURE ABOVE CATEGORIES MATCH")
-    st.write("""
+    # st.subheader("FULL LIST, UPDATE AS NEEDED THEN ENSURE ABOVE CATEGORIES MATCH")
+    # st.write("""
 
-    ['timestamp', 'ticker', 'open', 'high', 'low', 'close', 'volume', 'vwap',
-       'transactions', 'name', 'market_cap', 'exchange', 'country', 'SMA10',
-       'SMA20', 'SMA50', 'SMA100', 'pct_change_from_prev',
-       'next_close_pct_change', 'close_pct_of_day1', 'close_vs_SMA10',
-       'close_vs_SMA20', 'close_vs_SMA50', 'close_vs_SMA100', 'close_vs_open',
-       'high_vs_low', 'high_vs_close', 'low_vs_close', 'positive_streak',
-       'negative_streak', 'rolling_std_5', 'rolling_std_10', 'rolling_std_20',
-       'rolling_std_50', 'rolling_std_100', 'volume_vs_avg_5',
-       'volume_vs_avg_10', 'volume_vs_avg_20', 'volume_vs_avg_50',
-       'volume_vs_avg_100', '5_day_return', '10_day_return', '20_day_return',
-       'RSI14', 'EMA12', 'EMA26', 'MACD', 'MACD_signal', 'MACD_hist',
-       'MACD_pct', 'MACD_signal_pct', 'MACD_hist_pct', 'BB_middle', 'BB_std',
-       'BB_upper', 'BB_lower', 'BB_position', 'BB_width'],
-      dtype='object')
-    """)
+    # ['timestamp', 'ticker', 'open', 'high', 'low', 'close', 'volume', 'vwap',
+    #    'transactions', 'name', 'market_cap', 'exchange', 'country', 'SMA10',
+    #    'SMA20', 'SMA50', 'SMA100', 'pct_change_from_prev',
+    #    'next_close_pct_change', 'close_pct_of_day1', 'close_vs_SMA10',
+    #    'close_vs_SMA20', 'close_vs_SMA50', 'close_vs_SMA100', 'close_vs_open',
+    #    'high_vs_low', 'high_vs_close', 'low_vs_close', 'positive_streak',
+    #    'negative_streak', 'rolling_std_5', 'rolling_std_10', 'rolling_std_20',
+    #    'rolling_std_50', 'rolling_std_100', 'volume_vs_avg_5',
+    #    'volume_vs_avg_10', 'volume_vs_avg_20', 'volume_vs_avg_50',
+    #    'volume_vs_avg_100', '5_day_return', '10_day_return', '20_day_return',
+    #    'RSI14', 'EMA12', 'EMA26', 'MACD', 'MACD_signal', 'MACD_hist',
+    #    'MACD_pct', 'MACD_signal_pct', 'MACD_hist_pct', 'BB_middle', 'BB_std',
+    #    'BB_upper', 'BB_lower', 'BB_position', 'BB_width'],
+    #   dtype='object')
+    # """)
 
 
 
