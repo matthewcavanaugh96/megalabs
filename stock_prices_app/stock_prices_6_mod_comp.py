@@ -69,7 +69,7 @@ Using my Round 1 results and scoring each feature by my formula, I have tried us
 
 I tried instead to test accuracy for every possible amount of features, sorting by adjusted score from high to low with each successive run cutting one from the bottom, and choose my number of features from a plot. However, I could not get this to run with a Random Forest after 6 hours.
 
-In the absence of more precision, I will probably go ahead with using two quartiles on all models, including non-ML models which were not compatible with my original comparison methods.
+In the absence of more precision, I will probably go ahead with using two quartiles on all models, including non-ML models which were not compatible with my original comparison methods. It is possible that by adding in more models, improvement will become noticable.
 """)
 
 # so I am instead running accuracy with every possible list of Features, sorted by my adjusted Score from high to low, with each successive run cutting one from the bottom. When I can visualize the exact optimal number of features, I will run the model again with that.
