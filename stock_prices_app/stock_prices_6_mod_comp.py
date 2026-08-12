@@ -18,32 +18,44 @@ For each feature for each ML model, I calculated what I'm calling Feature Qualit
 
     0.2 * inverted correlation to directional correctness
 
-Once I had my FQS for each model, I then measured Average Pairwise Disagreement between all pairs of models. The smaller the number, the more similarly the feature performed across all models. The higher the number, the more 'controversial' the feature was. I am using Pairwise Disagreements because it goes farther than a simple Min-Max comparison. 
+Once I had my FQS for each model, I then measured Mean Absolute Deviation of all FQS score from the average. This provided the basis of my metric Consistency. Finally, I then performed the following operation to arrive at my final scores:
 
-Finally, for each feature, I balanced both metrics to find Consistency Adjusted FQS:
+    0.2 * (1 - MAD percentile) (AKA consistency)
 
-    Avg_FQS
-    
-    -
-    
-    (Avg_Disagreement * 0.5)
+    +
 
-Features with a high CAFQS are both high-performing and consistent.
+    0.8 * FQS percentile
+
 
 """)
 
-from PIL import Image
-img = Image.open('FQS_Dataframe.png')
-st.image(img)
+# st.write("""
+# between all pairs of models. The smaller the number, the more similarly the feature performed across all models. The higher the number, the more 'controversial' the feature was. I am using Pairwise Disagreements because it goes farther than a simple Min-Max comparison. 
+
+# Finally, for each feature, I balanced both metrics to find Consistency Adjusted FQS:
+
+#     Avg_FQS
+    
+#     -
+    
+#     (Avg_Disagreement * 0.5)
+
+# Features with a high CAFQS are both high-performing and consistent.
+
+# """)
+
+# from PIL import Image
+# img = Image.open('FQS_Dataframe.png')
+# st.image(img)
 
 
-st.write("""
-For a future attempt, I will try using only the features above a CAFQS threshold, and use this new feature set on all models again to see how much improvement takes place.
+# st.write("""
+# For a future attempt, I will try using only the features above a CAFQS threshold, and use this new feature set on all models again to see how much improvement takes place.
 
-I will add more models before that step.
+# I will add more models before that step.
 
-NOTE - Different types of models such as RNNs may not work for this comparison.
-""")
+# NOTE - Different types of models such as RNNs may not work for this comparison.
+# """)
 
 
 
@@ -53,7 +65,17 @@ Stumped
 """)
 
 st.write("""
-Using my Round 1 results, I have tried using the top three, two, and one quartiles. Accuracy is not exactly linear, so I am instead running accuracy with every possible list of Features, sorted by my adjusted Score from high to low, with each successive run cutting one from the bottom. When I can visualize the exact optimal number of features, I will run the model again with that.
+Using my Round 1 results and scoring each feature by my formula, I have tried using the top three, two, and one quartiles on a Random Forest. Results are not exactly linear - directional accuracy is 50.63% with three quartiles, 50.89% with two quartiles, and 50.00% with one quartile. Neither of these mark a notable improvement from the version that used all features.
 
+I tried instead to test accuracy for every possible amount of features, sorting by adjusted score from high to low with each successive run cutting one from the bottom, and choose my number of features from a plot. However, I could not get this to run with a Random Forest after 6 hours.
+
+In the absence of more precision, I will probably go ahead with using two quartiles on all models, including non-ML models which were not compatible with my original comparison methods.
+""")
+
+# so I am instead running accuracy with every possible list of Features, sorted by my adjusted Score from high to low, with each successive run cutting one from the bottom. When I can visualize the exact optimal number of features, I will run the model again with that.
+
+st.write("""
 Still, I don't know how confident I am in finding a truly predictive model. Directional accuracy has been barely better than 50% with anything I've tried so far.
+
+I wonder if the better idea is something that originated as a side-analysis: measuring whether following the model's advice would produce a better long-term return than simply holding. I achieved surprisingly strong results with a rudimentary version of this principle which you can see in the next section.
 """)

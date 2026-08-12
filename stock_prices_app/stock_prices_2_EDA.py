@@ -87,9 +87,12 @@ st.write("""
 Below, see a similar analysis, but with the thresholds instead measuring consecutive days of positive or negative movement.
 """)
 
-st.write("""
-(Need to add 7 and 8)
-""")
+img8 = Image.open('visualizations/v08_pos_prob_after_pos_streak.png')
+st.image(img8)
+
+img9 = Image.open('visualizations/v09_neg_prob_after_neg_streak.png')
+st.image(img9)
+
 
 st.write("""
 To what extent are our tech stocks collinear with each other, and how does this differ from the dataset as a whole? 
@@ -102,9 +105,13 @@ st.image(img10)
 img11 = Image.open('visualizations/v11_correlation_tech.png')
 st.image(img11)
 
-st.write("""
-(Need to add 12 and 13)
-""")
+# Which stocks improved the most on the final day?
+# Final day improvement, with 5b market cap filter.
+
+# st.write("""
+# (Need to add 12 and 13)
+# """)
+
 
 st.write("""
 This visualization shows the ten stocks that improved the most in terms of actual price over the course of the entire dataset.
