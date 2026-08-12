@@ -85,11 +85,29 @@ with tab1:
     # """)
 
 
-
-
 with tab2:
+    st.header("My models")
+    st.write(""" 
+    I tried an ARIMA time series model.
+
+    The first piece of news was good - every stock passed the Augmented Dickey-Fuller (ADF) test, meaning no difference was required, so I could set d=0 and move on.
+            
+    Then, I performed a grid search to find the best combination of autoregressive (p) and moving-average (q) values for each stock, using Akaike Information Criterion (AIC) as my measuring stick. 
+            
+    Roughly a quarter of all stocks selected ARIMA(0,0,0), indicating a negligible difference from white noise.
+        
+    Rather than choosing a single ARIMA specification, a grid search was performed across multiple combinations of autoregressive (p) and moving-average (q) orders. For each stock, the model with the lowest Akaike Information Criterion (AIC) was selected.
+            
+    However, even the best-performing models had directional accuracy barely better than a coin flip. I'll nonetheless find a way to incorporate these results for comparison and benchmark purposes. 
+    """)
+
+
+
+with tab3:
     st.header("My decision making process")
     st.write("""
+
+    OUTDATED. Need to update.
 
     Overall, my intention is to find features that are likely to work well with ANY model.
     The target column, 'next_close_pct_change' obviously had to be excluded. Same for 'pct_change_from_prev' which is the exact same number, just shifted forward one day.
@@ -100,14 +118,8 @@ with tab2:
     """)
 
 
-with tab3:
-    st.header("Feature Set 1")
-    st.write("""
-    Placeholder
-    """)
-
 with tab4:
-    st.header("General findings")
+    st.header("Feature set 1")
     st.write("""
     Placeholder
     """)

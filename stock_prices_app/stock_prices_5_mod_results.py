@@ -7,37 +7,25 @@ Modeling Results 🖥️ 🧠 🧮
 """)
 
 
-tab1, tab2, tab3, tab4 = st.tabs([
-    "ARIMA",
-    "Random Forest",
-    "Linear Regression",
-    "XGBoost"
+tab1, tab2 = st.tabs([
+    "Ensemble Round 1",
+    "Ensemble Round 2"
 ])
 
 with tab1:
-    st.header("ARIMA")
+    st.header("Ensemble Round 1")
     st.write(""" 
-    I tried an ARIMA time series model.
-
-    The first piece of news was good - every stock passed the Augmented Dickey-Fuller (ADF) test, meaning no difference was required, so I could set d=0 and move on.
-            
-    Then, I performed a grid search to find the best combination of autoregressive (p) and moving-average (q) values for each stock, using Akaike Information Criterion (AIC) as my measuring stick. 
-            
-    Roughly a quarter of all stocks selected ARIMA(0,0,0), indicating a negligible difference from white noise.
-        
-    Rather than choosing a single ARIMA specification, a grid search was performed across multiple combinations of autoregressive (p) and moving-average (q) orders. For each stock, the model with the lowest Akaike Information Criterion (AIC) was selected.
-            
-    However, even the best-performing models had directional accuracy barely better than a coin flip. I'll nonetheless find a way to incorporate these results for comparison and benchmark purposes. 
+    So far, this includes: Linear Regression, XGBoost, Random Forest, Extra Trees, Gradient Booster.
     """)
+
+    #st.image("visualizations/Round_1_Model_Aggs.png", caption="Individual model aggregates", width=600)
+    st.image("visualizations/models_and_ensemble.png", caption="Individual and ensemble scores. NOTE: Ensemble metrics are not a simple average of individual model metrics; they are calculated separately from the ensemble’s averaged predictions. This is how the some metrics are able to improve.", width=800)
+
 
 
 with tab2:
-    st.header("Random Forest")
-
-
-with tab3:
-    st.header("Linear Regression")
-
-with tab4:
-    st.header("XGBoost")
+    st.header("Ensemble Round 2")
+    st.write("""
+    Coming soon
+    """)
 
