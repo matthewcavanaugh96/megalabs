@@ -65,17 +65,27 @@ Stumped
 """)
 
 st.write("""
-Using my Round 1 results and scoring each feature by my formula, I have tried using the top three, two, and one quartiles on a Random Forest. Results are not exactly linear - directional accuracy is 50.63% with three quartiles, 50.89% with two quartiles, and 50.00% with one quartile. Neither of these mark a notable improvement from the version that used all features.
+Using my Round 1 results and scoring each feature by my formula, I have tried using the top three, two, and one quartiles on a Random Forest. Results are not exactly linear - still without GridSearch, directional accuracy is 50.63% with three quartiles, 50.89% with two quartiles, and 50.00% with one quartile. Neither of these mark a notable improvement from the version that used all features.
 
 I tried instead to test accuracy for every possible amount of features, sorting by adjusted score from high to low with each successive run cutting one from the bottom, and choose my number of features from a plot. However, I could not get this to run with a Random Forest after 6 hours.
 
-In the absence of more precision, I will probably go ahead with using two quartiles on all models, including non-ML models which were not compatible with my original comparison methods. It is possible that by adding in more models, improvement will become noticable.
+In the absence of more precision, my next thought was to go ahead with using the top two quartiles for the other models, including ones not compatible with my original feature selection method. It is possible that by adding in more models, improvement will become noticable. 
+
+The Linear Regression, which lacks GridSearch, under this feature set, had a directional accuracy of 49.87%.
+
+With GridSearch, Random Forest reached ____
+
+With GridSearch, XGBoost reached _____
+
+With GridSearch, Gradient Booster reached _____
 """)
 
 # so I am instead running accuracy with every possible list of Features, sorted by my adjusted Score from high to low, with each successive run cutting one from the bottom. When I can visualize the exact optimal number of features, I will run the model again with that.
 
+st.title("What next?")
+
 st.write("""
-Still, I don't know how confident I am in finding a truly predictive model. Directional accuracy has been barely better than 50% with anything I've tried so far.
+Truthfully, I don't know what the next move is, and I don't know how confident I am in finding a truly predictive model. Directional accuracy has been barely better than 50% with anything I've tried so far.
 
 I wonder if the better idea is something that originated as a side-analysis: measuring whether following the model's advice would produce a better long-term return than simply holding. I achieved surprisingly strong results with a rudimentary version of this principle which you can see in the next section.
 """)

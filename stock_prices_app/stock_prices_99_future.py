@@ -20,12 +20,12 @@ st.title("Future ideas")
 
 with st.expander("Hourly data"):
     st.write("""
-    I downloaded daily data as well but I forgot how far back it goes. Could the hourly data somehow be incorporated with the daily data? to what extent? Another challenge is that (I believe) I got the hourly data from a different API which measures prices differently - the highest hourly price from the Hourly doesn't line up with the high price on the Daily set.
+    I downloaded daily data as well but I forgot how far back it goes. Could the hourly data somehow be incorporated with the daily data? to what extent? Another challenge is that I got the hourly data from a different API which measures prices differently - the highest hourly price from the Hourly doesn't line up with the high price on the Daily set.
     """)
 
 
 
-with st.expander("Expander test"):
+with st.expander("Categories"):
     st.write("""
-    test
+    I am curious as to how stocks in similar categories (finance, travel etc) moved relative to each other. Howwever, categorization can be subjective, and the API data I downloaded did not provide any such labels. With nearly 3000 stocks, this would be too much to do manually, so this may be a task for AI agents.
     """)

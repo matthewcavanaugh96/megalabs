@@ -1,3 +1,6 @@
+# SAFETY COPY
+# THIS WORKED BUT WAS A BIT MORE CLUMSY, AND STRUGGLED WITH MANUALLY ENTERING
+
 import random
 from pathlib import Path
 
@@ -5,6 +8,7 @@ import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
+
 
 
 # ---------------------------------------------------------
