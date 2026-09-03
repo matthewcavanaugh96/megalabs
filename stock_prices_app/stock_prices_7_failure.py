@@ -27,19 +27,38 @@ What if you took the model's advice every day?
 """)
 
 st.write("""
-I simulated a scenario in which an investor took the models' advice every day in 2025. This hypothetical investor knows nothing other than the models' aggregate directional prediction for the day, and will act accordingly at open. They will enter day one of the simulation holding a single share of a stock at the previous day's actual closing value. For this and all subsequent days, their decision to buy, hold, or sell will be determined by the ensemble model's directional guess. If the ensemble predicts a positive movement, they will either hold their share if they have one or buy one if they don't have. If the ensemble predicts a negative movement, they will sell their share if they have one or do nothing if they don't.
+I simulated a scenario in which an investor took the models' advice every day in 2025. This hypothetical investor knows nothing other than the models' aggregate directional prediction for the day, and will act accordingly at open. They will enter day one of the simulation holding a single share of a stock at the previous day's actual closing value. For this and all subsequent days, their decision to buy, hold, or sell will be determined by the ensemble model's directional guess. If the ensemble predicts a positive movement, they will either hold their share if they have one or buy one if they don't have. If theensemble predicts a negative movement, they will sell their share if they have one or do nothing if they don't.
+
+I ran this simulation previously, but have also created an alternative version with two killswitches which will result in the trader permanent ceasing to trade the stock: 
+1. The stock drops 30% below its day-one value
+2. The stock experiences 10 consecutive days of negative growth where the market overall is positive
 """)
 
-
-st.markdown("The results surprised me. We observed earlier than the ensemble model's directional accuracy was only 49%. <u>Despite this, I found that for 69% of stocks (1920 out of 2784), following the ensemble's advice would produce a stronger return than simply holding a share throughout the year.</u>.", unsafe_allow_html=True)
 
 st.write("""
-This suggested to me that the average positive day probably produces a stronger growth than a negative day does a loss. But even this difference was surprisingly negligible: positive days had a mean growth of 2.026 and median of 1.238, while negative days had a mean loss of -1.927 and median of -1.232, and there were slightly more negative than positive stock days.
+The results surprised me. We observed earlier than the ensemble model's directional accuracy was only 49%. Despite this, I found that for about 69% of stocks (1918 out of 2784), following the ensemble's advice would produce a stronger return than simply holding a share throughout the year.)
 """)
 
+
 st.write("""
-Below, see which stocks would have done the best and worst for an investor following the model's advice.
+If a trader simply held a single stock throughout the entire year, their closing portfolio value would be $980249.
+
+Following the blind advice model, their closing value would be $1602655.
+
+Following advice but with killswitches, the closing vlaue would be $2056783.
+
+The total cost of incorrect killswitches - that is, stocks that finished above the value at which they were killed - was $1956.
+
+The total benefit of correct killswitches - stocks that never recovered above their killed value - was $1185698.
+
+This disparity is in spite of the absolute numbers of correct and incorrect killswitches being close to equal.
 """)
+
+
+st.write("""
+OUTDATED VISUALIZATIONS Below, see which stocks would have done the best and worst for an investor following the model's advice.
+""")
+
 
 st.image("visualizations/ensemble_sim_top_10_pct.png", caption="These ten stocks had the largest potential return, by percentage, for an investor who always followed the ensemble model's advice.")
 
