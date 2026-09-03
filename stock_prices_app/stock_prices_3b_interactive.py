@@ -23,6 +23,10 @@ METADATA_PATH = APP_DIR / "daily_cleaned_metadata.parquet"
 
 st.title("Make your own plots!")
 
+st.write("""
+This version will contain all 2784 stocks for which I have data. Performance may be slower, though I am working on optimizations.
+""")
+
 
 # ---------------------------------------------------------
 # Load small ticker/name metadata only
